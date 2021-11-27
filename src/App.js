@@ -1,23 +1,60 @@
-import logo from './logo.svg';
 import './App.css';
+import StripeContainer from './components/StripeContainer';
+import React, { useState, useEffect } from 'react';
+
+function Booking(props) {
+  const [showItem, setShowItem] = useState();
+  const [type, setType] = useState(20);
+  const [length, setLength] = useState(1);
+  const [amount, setAmount] = useState(20);
+
+  useEffect(() => {
+    changeAmount();
+  });
+
+  function changeType(e) {
+    setType(e.target.value);
+  }
+
+  function changeLength(e) {
+    setLength(e.target.value);
+  }
+
+  function changeAmount() {
+    setAmount(length * type);
+  }
+
+  function handleClick() {
+    setShowItem(!showItem);
+  }
+
+  return (
+    <React.Fragment>
+      <div className='inputs'>
+        <label htmlFor='type'></label>
+        <select onChange={changeType} name='type' id='type'>
+          <option value='20'>One-on-one</option>
+          <option value='100'>Group Session</option>
+        </select>
+        <select onChange={changeLength} name='' id=''>
+          <option value='1'>1 hour</option>
+          <option value='2'>2 hours</option>
+          <option value='3'>3 hours</option>
+        </select>
+        <button onClick={handleClick}>Book</button>
+      </div>
+
+      <p>{type * length}</p>
+
+      <div>{showItem ? <StripeContainer amount={amount} /> : <p></p>}</div>
+    </React.Fragment>
+  );
+}
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <Booking />
     </div>
   );
 }
